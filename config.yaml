@@ -1,0 +1,26 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+exporters:
+  googlecloud:
+    project: otel-starter-project
+  debug:
+    verbosity: detailed
+processors:
+  batch:
+  resourcedetection:
+    detectors: [gcp]
+    timeout: 10s
+service:
+  telemetry:
+    logs:
+      level: debug
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: []
+      exporters: [debug, googlecloud]
