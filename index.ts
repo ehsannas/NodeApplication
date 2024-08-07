@@ -86,20 +86,33 @@ provider.register();
 // console.log("Done initializing Tracing...");
 
 async function main(): Promise<void> {
-
   // Enable this block to log SDK messages
   setLogFunction((msg: string) => {
     console.log(`LogFunction: ${msg}`);
   });
 
   const settings: Settings = {
-    projectId: 'myproject-d5314',
-    preferRest: false,
+    projectId: 'otel-starter-project',
+    preferRest: false
   };
 
   const firestore = new Firestore(settings);
-  await firestore.collection('foo').doc("bar").get();
+
+  // // Create if needed
+  // const docRef = await firestore.collection('foo').doc('bar');
+  // await docRef.set({
+  //   first: 'Ada',
+  //   last: 'Lovelace',
+  //   born: 1815
+  // });
+
+  // get
+  const doc = await firestore.collection('foo').doc('bar').get();
+  console.log('===> Got doc %s', doc);
+
   await firestore.terminate();
+
+  setTimeout(() => {}, 10_000);
 }
 
 main();
